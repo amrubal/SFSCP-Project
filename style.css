@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap');
+
+*{
+    box-sizing: border-box;
+    margin: 1;
+    padding: 0;
+}
+
+body{
+    font-family: 'Raleway', sans-serif;
+}
+
+.container{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1{
+    margin-bottom: 20px;
+}
+
+.schedule___container{
+    background: linear-gradient(#E8F9FA, #EEF9FA);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+
+.days___container{
+    display: flex;
+}
+
+
+.corner{
+    width: 60px;
+    height: 60px;
+    margin: 1px;
+}
+
+
+.day{
+    width: 100px;
+    border: solid 1px white;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2px;
+}
+
+
+
+.part__day{
+    display: flex;
+}
+
+
+.time{
+    width: 62px;
+    height: 35px;
+    color: black;
+    background-color: #D0F8FC;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.task{
+    background-color: white;
+    height: 70px;
+    width: 100px;
+    margin: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+}
