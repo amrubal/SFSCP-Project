@@ -1,6 +1,7 @@
 // Create new Timetable instance
 let timetable = new Timetable();
 
+
 // Set the time from 9 to 3
 const finalstarttime = 9;
 const finalendtime = 21;
