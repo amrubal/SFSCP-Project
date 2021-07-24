@@ -1,64 +1,117 @@
-// Create new Timetable instance
-let timetable = new Timetable();
+function initializeTimeArray(arr){
+    // Initialize timearray to empty array
+    let timearray = [];
 
+    // Loop and add zero into each interval
+    for (let i = 0; i < (finalEndTime-finalStartTime)*interval; i++)
+    {
+        timearray[i] = 0;
+    }
+    return timearray;
+}
 
-// Set the time from 9 to 3
-const finalstarttime = 9;
-const finalendtime = 21;
-timetable.setScope(finalstarttime, finalendtime)
+function addArray(arr1, arr2){
+    function addArrDiffLen(arr1, arr2){
+        let shorter = arr1.length > arr2.length ? arr2 : arr1
+        let lengthier = arr1.length > arr2.length ? arr1 : arr2
 
-// Set the rows headers
-timetable.addLocations(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
+        let counter = 0;
+        let result = [];
 
-//12 hour array with 30 minute intervals initalized to zero
-const timearray = [];
-for (var i = 0; i < (finalendtime-finalstarttime)*2; i++)
-{
-    timearray[i] = 0;
+        while (counter < shorter.length){
+            // If counter is less than shorter's length
+            // Then just add them two arrays normally
+            result[counter] = arr1[counter] + arr2[counter];
+            counter++;
+        }
+
+        while (counter < lengthier.length){
+            result[counter] = lengthier[counter];
+            counter++;
+        }
+
+        return result;
+    }
+
+    return arr1.length === arr2.length
+           ? arr1.map((number, id) => number + arr2[id])
+           : addArrDiffLen(arr1, arr2); 
+}
+
+function detectConflict(class1, class2){
+    let sum = addArray(class1, class2);
+    return Math.max(...sum) === 2 ? true : false;
 }
 
 //function to take in multiple classes
-function addEventToArray(startdate, enddate)
+function addEventToArray(startDate, endDate)
 {
+    let timearray = initializeTimeArray();
     //hours of event time substracted by start time multiplied by intervals between every hour
-    let starttime = (startdate.getHours()-finalstarttime)*2
-    switch(startdate.getMinutes()) {
+    let startTime = (startDate.getHours()-finalStartTime)*interval
+    switch(startDate.getMinutes()) {
         case 00:
             break;
         case 30:
-            starttime += 1;
+            startTime += 1;
             break;
     }
     //document.write(starttime)
 
-    let endtime = (enddate.getHours()-finalstarttime)*2
-    switch(enddate.getMinutes()) {
+    let endTime = (endDate.getHours()-finalStartTime)*interval
+    switch(endDate.getMinutes()) {
         case 00:
             break;
         case 30:
-            endtime += 1;
+            endTime += 1;
             break;
     }
     //document.write(endtime)
 
-    for (var i = starttime; i <= endtime; i++)
+    for (let i = startTime; i <= endTime; i++)
     {
         timearray[i] += 1;
     }
+    return timearray;
 }
 
+// Create new Timetable instance
+let timetable = new Timetable();
+
+// Set the time from 9AM to 9PM
+const finalStartTime = 9;
+const finalEndTime = 21;
+const interval = 2; //  1 hour / 30 minutes = 2 x 30mins interval each hour
+
+timetable.setScope(finalStartTime, finalEndTime)
+
+// Set the rows headers
+timetable.addLocations(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
 
 //test with event above
 const day = new Date(2021,7,17,15,30);
-const day2 = new Date(2021,7,17,18,00);
+const day2 = new Date(2021,7,17,19,00);
+
+const day3 = new Date(2021,7,17,19,00);
+const day4 = new Date(2021,7,17,19,30);
+
+// Time : 1pm - 2pm in string -> new Date(2021,7,17,19,00);
+// function (date1, date2) => true or false 
+
 timetable.addEvent('test 1', 'Thursday', day, day2, {url: "google.com"}, {class: 'vip'}); // options attribute is not used for this event
-addEventToArray(day, day2)
+addEventToArray(day, day2);
 
+let test1 = addEventToArray(day, day2);
+let test2 = addEventToArray(day3, day4);
 
+document.write(test1);
+document.write("<br>");
+document.write(test2);
+document.write("<br>");
+document.write(addArray(test1, test2));
+document.write("<br>");
+document.write(detectConflict(test1, test2));
 
-//print out array test
-let text = timearray.toString();
-document.write(text);
 
 //random functions below
 //const x = day.getMinutes();
