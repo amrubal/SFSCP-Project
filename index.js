@@ -3,7 +3,7 @@ function initializeTimeArray(arr){
     let timearray = [];
 
     // Loop and add zero into each interval
-    for (let i = 0; i < (finalEndTime-finalStartTime)*interval; i++)
+    for (let i = 0; i < (finalEndTime-finalStartTime)*interval*5; i++)
     {
         timearray[i] = 0;
     }
@@ -44,7 +44,7 @@ function detectConflict(class1, class2){
 }
 
 //function to take in multiple classes
-function addEventToArray(startDate, endDate)
+function addEventToArray(startDate, endDate, day)
 {
     let timearray = initializeTimeArray();
     //hours of event time substracted by start time multiplied by intervals between every hour
@@ -68,7 +68,27 @@ function addEventToArray(startDate, endDate)
     }
     //document.write(endtime)
 
-    for (let i = startTime; i <= endTime; i++)
+    //determine where all the days are at in the event array
+    let x = 0;
+    switch(day) {
+        case 'Monday':
+            break;
+        case 'Tuesday':
+            x += 12 * interval;
+            break;
+        case 'Wednesday':
+            x += 12 * (interval + 2);
+            break;
+        case 'Thursday':
+            x += 12 * (interval + 4);
+            break;
+        case 'Friday':
+            x+= 12 * (interval + 6);
+            break;
+    }
+    //document.write(x);
+
+    for (let i = startTime + x; i < endTime + x; i++)
     {
         timearray[i] += 1;
     }
@@ -89,28 +109,30 @@ timetable.setScope(finalStartTime, finalEndTime)
 timetable.addLocations(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
 
 //test with event above
-const day = new Date(2021,7,17,15,30);
-const day2 = new Date(2021,7,17,19,00);
+const day = new Date(2021,7,17,10,00);
+const day2 = new Date(2021,7,17,11,00);
 
 const day3 = new Date(2021,7,17,19,00);
 const day4 = new Date(2021,7,17,19,30);
 
 // Time : 1pm - 2pm in string -> new Date(2021,7,17,19,00);
 // function (date1, date2) => true or false 
+let day_type = 'Monday'
+timetable.addEvent('test 1', day_type, day, day2, {url: "google.com"}, {class: 'vip'}); // options attribute is not used for this event
 
-timetable.addEvent('test 1', 'Thursday', day, day2, {url: "google.com"}, {class: 'vip'}); // options attribute is not used for this event
-addEventToArray(day, day2);
-
-let test1 = addEventToArray(day, day2);
-let test2 = addEventToArray(day3, day4);
-
+let test1 = addEventToArray(day, day2, day_type);
+//let test2 = addEventToArray(day3, day4);
 document.write(test1);
-document.write("<br>");
-document.write(test2);
-document.write("<br>");
-document.write(addArray(test1, test2));
-document.write("<br>");
-document.write(detectConflict(test1, test2));
+//document.write("<br>");
+//document.write(test2);
+//document.write("<br>");
+//document.write(addArray(test1, test2));
+//document.write("<br>");
+//document.write(detectConflict(test1, test2));
+
+
+
+
 
 
 //random functions below
