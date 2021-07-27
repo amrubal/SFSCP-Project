@@ -1,3 +1,23 @@
+import Course from './Course.js';
+import courseArray from './data.js'
+
+// Counter to get course from arr
+let counter = 0;
+
+// Create new Timetable instance
+let timetable = new Timetable();
+
+// Set the time from 6AM to 9PM
+const finalStartTime = 6;
+const finalEndTime = 21;
+const interval = 2; //  1 hour / 30 minutes = 2 x 30mins interval each hour
+
+timetable.setScope(finalStartTime, finalEndTime)
+
+//  Set the rows headers
+timetable.addLocations(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
+
+// Intialize time array with 0s.
 function initializeTimeArray(arr){
     // Initialize timearray to empty array
     let timearray = [];
@@ -10,6 +30,7 @@ function initializeTimeArray(arr){
     return timearray;
 }
 
+// Function to add two arrays.
 function addArray(arr1, arr2){
     function addArrDiffLen(arr1, arr2){
         let shorter = arr1.length > arr2.length ? arr2 : arr1
@@ -38,103 +59,70 @@ function addArray(arr1, arr2){
            : addArrDiffLen(arr1, arr2); 
 }
 
+// Logic to detect conflict between two courses
 function detectConflict(class1, class2){
     let sum = addArray(class1, class2);
     return Math.max(...sum) === 2 ? true : false;
 }
 
-//function to take in multiple classes
-function addEventToArray(startDate, endDate)
-{
+// Add a class into timetable
+function addClass(course){
+    function addEventToArray(startDate, endDate){
     let timearray = initializeTimeArray();
     //hours of event time substracted by start time multiplied by intervals between every hour
     let startTime = (startDate.getHours()-finalStartTime)*interval
     switch(startDate.getMinutes()) {
-        case 00:
+        case 0:
             break;
         case 30:
             startTime += 1;
             break;
     }
-    //document.write(starttime)
 
     let endTime = (endDate.getHours()-finalStartTime)*interval
     switch(endDate.getMinutes()) {
-        case 00:
+        case 0:
             break;
         case 30:
             endTime += 1;
             break;
     }
-    //document.write(endtime)
 
     for (let i = startTime; i <= endTime; i++)
     {
         timearray[i] += 1;
     }
     return timearray;
+    }
+
+    timetable.addEvent(course.name,course.days,course.dateStart,course.dateEnd);
 }
 
-// Create new Timetable instance
-let timetable = new Timetable();
+// Add Class Button
+const addClassButton = document.getElementById('addClass');
 
-// Set the time from 9AM to 9PM
-const finalStartTime = 9;
-const finalEndTime = 21;
-const interval = 2; //  1 hour / 30 minutes = 2 x 30mins interval each hour
+// Event for addClassbutton
+addClassButton.addEventListener('click', () => {
+    // Get Course from array of Courses in data.js
+    let course1 = courseArray[counter];
+    
+    // Split course.days into single day and add them into table one-by-one
+    let courseDays = course1.days.split(' ');
+    courseDays.forEach(day => {
+        course1.setDay(day);
+        addClass(course1);
+    });
 
-timetable.setScope(finalStartTime, finalEndTime)
+    // rerender this table everytime we add a new course into the table
+    renderer.draw('.timetable');
 
-// Set the rows headers
-timetable.addLocations(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
+    // Increase counter to get new course
+    counter++;
+})
 
-//test with event above
-const day = new Date(2021,7,17,15,30);
-const day2 = new Date(2021,7,17,19,00);
-
-const day3 = new Date(2021,7,17,19,00);
-const day4 = new Date(2021,7,17,19,30);
-
-// Time : 1pm - 2pm in string -> new Date(2021,7,17,19,00);
-// function (date1, date2) => true or false 
-
-timetable.addEvent('test 1', 'Thursday', day, day2, {url: "google.com"}, {class: 'vip'}); // options attribute is not used for this event
-addEventToArray(day, day2);
-
-let test1 = addEventToArray(day, day2);
-let test2 = addEventToArray(day3, day4);
-
-document.write(test1);
-document.write("<br>");
-document.write(test2);
-document.write("<br>");
-document.write(addArray(test1, test2));
-document.write("<br>");
-document.write(detectConflict(test1, test2));
-
-
-//random functions below
-//const x = day.getMinutes();
-//document.write(x);
-
-
-
-// Add blocks (with options) into timetable. 
-//timetable.addEvent('Lasergaming', 'Friday', new Date(2015,7,17,17,45), new Date(2015,7,17,19,30), { class: 'what', data: { maxPlayers: 14, gameType: 'Capture the flag' } });
-
-// Add lunch event with onClick
-//timetable.addEvent('Lunch', 'Monday', new Date(2015,7,17,9,30), new Date(2015,7,17,11,00), { onClick: function(event) {
-//window.alert('You clicked on the ' + event.name + ' event in ' + event.location + '. This is an example of a click handler');
-//}});
-
-// Render the timetable
-var renderer = new Timetable.Renderer(timetable);
+// Render table
+let renderer = new Timetable.Renderer(timetable);
 renderer.draw('.timetable');
 
-// OPTIONAL Google Analytics
-// (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-//     function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-//     e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-//     e.src='//www.google-analytics.com/analytics.js';
-//     r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-//     ga('create','UA-37417680-5');ga('send','pageview');
+
+
