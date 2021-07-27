@@ -23,7 +23,7 @@ function initializeTimeArray(arr){
     let timearray = [];
 
     // Loop and add zero into each interval
-    for (let i = 0; i < (finalEndTime-finalStartTime)*interval; i++)
+    for (let i = 0; i < (finalEndTime-finalStartTime)*interval*5; i++)
     {
         timearray[i] = 0;
     }
@@ -88,7 +88,27 @@ function addClass(course){
             break;
     }
 
-    for (let i = startTime; i <= endTime; i++)
+    //determine where all the days are at in the event array
+    let x = 0;
+    switch(day) {
+        case 'Monday':
+            break;
+        case 'Tuesday':
+            x += 12 * interval;
+            break;
+        case 'Wednesday':
+            x += 12 * (interval + 2);
+            break;
+        case 'Thursday':
+            x += 12 * (interval + 4);
+            break;
+        case 'Friday':
+            x+= 12 * (interval + 6);
+            break;
+    }
+    //document.write(x);
+
+    for (let i = startTime + x; i < endTime + x; i++)
     {
         timearray[i] += 1;
     }
