@@ -2,6 +2,7 @@ import Course from './Course.js';
 import courseArray from './data.js'
 
 // Counter to get course from arr
+let list = generateList();
 let counter = 0;
 
 // Create new Timetable instance
@@ -17,6 +18,24 @@ timetable.setScope(finalStartTime, finalEndTime)
 //  Set the rows headers
 timetable.addLocations(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
 
+// Generate random numbers in a list
+function generateList(){
+    let list = [];
+    for(let i = 0; i < courseArray.length;i++){
+        list.push(i);
+    }
+    let i = list.length-1;
+    while (i >= 0){
+        let j = Math.floor(Math.random() * (i+1));
+        
+        let temp = list[i];
+        list[i] = list[j];
+        list[j] = temp;
+        i--;
+    }
+    return list;
+}
+
 // Intialize time array with 0s.
 function initializeTimeArray(arr){
     // Initialize timearray to empty array
@@ -25,7 +44,7 @@ function initializeTimeArray(arr){
     // Loop and add zero into each interval
     for (let i = 0; i < (finalEndTime-finalStartTime)*interval*5; i++)
     {
-        timearray[i] = 0;
+        timearray.push(0);
     }
     return timearray;
 }
@@ -67,7 +86,10 @@ function detectConflict(class1, class2){
 
 // Add a class into timetable
 function addClass(course){
-    function addEventToArray(startDate, endDate){
+    timetable.addEvent(course.name,course.days,course.dateStart,course.dateEnd);
+}
+
+function addEventToArray(startDate, endDate, day){
     let timearray = initializeTimeArray();
     //hours of event time substracted by start time multiplied by intervals between every hour
     let startTime = (startDate.getHours()-finalStartTime)*interval
@@ -113,25 +135,37 @@ function addClass(course){
         timearray[i] += 1;
     }
     return timearray;
-    }
-
-    timetable.addEvent(course.name,course.days,course.dateStart,course.dateEnd);
 }
 
 // Add Class Button
 const addClassButton = document.getElementById('addClass');
 
 // Event for addClassbutton
+
+let arr = initializeTimeArray();
+
 addClassButton.addEventListener('click', () => {
     // Get Course from array of Courses in data.js
-    let course1 = courseArray[counter];
+    let course1 = courseArray[list[counter]];
     
     // Split course.days into single day and add them into table one-by-one
     let courseDays = course1.days.split(' ');
-    courseDays.forEach(day => {
+    for(let day of courseDays){
         course1.setDay(day);
-        addClass(course1);
-    });
+        arr = addArray(arr,  addEventToArray(course1.dateStart, course1.dateEnd, day));
+        if (Math.max(...arr) === 2){
+            alert("Cannot add");
+            break;
+        } else {
+            console.log("adding array");
+            addClass(course1);
+        }
+        console.log(Math.max(...arr));
+        console.log(detectConflict(arr, course1));
+
+    };
+
+
 
     // rerender this table everytime we add a new course into the table
     renderer.draw('.timetable');
