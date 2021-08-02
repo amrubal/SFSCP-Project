@@ -6,6 +6,22 @@ class Node {
         this.children = children;
     }
 
+    traverse(node)
+    {
+        let result = [];
+
+        if (node.children[0].children.length === 0) {
+            result.push(node);
+            return;
+        }
+
+        else {
+            node.children.forEach(element => element.traverse(element));
+        }
+
+        return result;
+    }
+
     insert(new_class_possibilities)
     {
         //if ncp has no children
@@ -17,16 +33,28 @@ class Node {
                 //clone node in class list of times
                 let temp = new Node(new_class_possibilities[i].value, new_class_possibilities[i].layer, []);
                 //console.log(temp);
+
                 // Root is not combined with first layer
                 if (this.value != 'Root')
                 {
-                    temp.value += this.value;
+                    if (detectConflict(temp.value, this.value))
+                    {
+                        //console.log("there's a conflict");
+                    }
+                    else{
+                        //console.log("there's no conflict");
+                        temp.value = addArray(temp.value, this.value);
+                        this.children.push(temp);
+                    }
+                
+                    //console.log(Math.max(... temp.value));
+                    
+
+                    //temp.value += this.value;
                 }
 
-                //add children
-                console.log("add " + temp.value + "to " + this.value);
-                console.log("ncp: " + temp.value);
-                this.children.push(temp);
+                //uncomment to check addibng
+                //console.log("add " + temp.value + "to " + this.value);
             }
         }
 
@@ -38,34 +66,67 @@ class Node {
     }
 }
 
-let node1 = new Node('first', 1, []);
-let node2 = new Node('second', 1, []);
-let node6 = new Node('sixth', 1, []);
+
+
+
+function detectConflict(class1, class2){
+    let sum = addArray(class1, class2);
+    //console.log(sum);
+    return Math.max(...sum) === 2 ? true : false;
+}
+
+// Function to add two arrays.
+function addArray(arr1, arr2){
+    function addArrDiffLen(arr1, arr2){
+        let shorter = arr1.length > arr2.length ? arr2 : arr1
+        let lengthier = arr1.length > arr2.length ? arr1 : arr2
+
+        let counter = 0;
+        let result = [];
+
+        while (counter < shorter.length){
+            // If counter is less than shorter's length
+            // Then just add them two arrays normally
+            result[counter] = arr1[counter] + arr2[counter];
+            counter++;
+        }
+
+        while (counter < lengthier.length){
+            result[counter] = lengthier[counter];
+            counter++;
+        }
+
+        return result;
+    }
+    
+    return arr1.length === arr2.length
+           ? arr1.map((number, id) => number + arr2[id])
+           : addArrDiffLen(arr1, arr2); 
+}
+
+let node1 = new Node([0,0,1,1,0,0,0,0], 1, []);
+let node2 = new Node([1,1,0,0,0,0,0,0], 1, []);
 let layer1 = [];
 layer1.push(node1);
 layer1.push(node2);
-layer1.push(node6);
 
 
-let node3 = new Node('third', 2, []);
-let node5 = new Node('fifth', 2, []);
+let node3 = new Node([0,0,0,0,1,1,0,0], 2, []);
 let layer2 = [];
 layer2.push(node3);
-layer2.push(node5);
 
 
-let node4 = new Node('fourth', 3, []);
-let node7 = new Node('seventh', 3, []);
+let node4 = new Node([0,0,0,1,1,1,0,0], 3, []);
 let layer3 = [];
 layer3.push(node4);
-layer3.push(node7);
 
-let tree = new Node('Root', 0, []);
+let tree = new Node([0,0,0,0,0,0,0,0], 0, []);
 
 //insert a list of times for one class
 tree.insert(layer1);
 tree.insert(layer2);
 tree.insert(layer3);
+console.log(tree.traverse(tree));
 
-console.log(tree.children[0].children[0].children[0]);
+//console.log(tree.children[0].children[0]);
 
