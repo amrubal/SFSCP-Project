@@ -165,6 +165,10 @@ addClassButton.addEventListener('click', () => {
 
     };
 
+    //add drop down menu based off core and then display chose core in table
+    $(document).ready(function(){
+        $('.dropdown-toggle').dropdown();
+    });
 
 
     // rerender this table everytime we add a new course into the table

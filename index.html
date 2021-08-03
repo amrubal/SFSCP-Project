@@ -23,10 +23,51 @@
 <body>
     <!-- Placeholder for time table -->
     <h1>Building Schedule Prototype</h1>
+
+
+ <!--drop down menu-->
+<!--refrence: https://getbootstrap.com/docs/4.0/components/dropdowns/-->
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+  
+  <div class="container">
+    <h4>Select Core</h4>
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown"> Core
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">A (Foundations of Communication)</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">B (Math and Science)</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">C (Humanties)</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">D (Philosophy, Theology, and Ethics)</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">E (Social Sciences)</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">F (Visual Arts)</a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">CEL or SL (Community Engaged Learning)</a></li>
+      </ul>
+    </div><br>
+    <p><strong>Note:</strong> Select core to find classes that meet USFCA core requirements.</p>
+  </div>
+  
+  <script>
+  $(document).ready(function(){
+    $(".dropdown-toggle").dropdown();
+  });
+  </script>
+
+
+  <!--table and add class button-->
+  
+  </body>
     <button id="addClass">Add Class</button>
     <div class="timetable">
         
     </div>
     <script type="module" src="index.js"></script>
 </body>
+
 </html>
