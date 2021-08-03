@@ -1,4 +1,7 @@
+
+
 class Node {
+
     constructor(value, layer, children)
     {
         this.value = value;
@@ -6,20 +9,19 @@ class Node {
         this.children = children;
     }
 
-    traverse(node)
-    {
-        let result = [];
 
-        if (node.children[0].children.length === 0) {
+    traverse(node, result){
+        if (node.children.length === 0) {
             result.push(node);
             return;
         }
 
         else {
-            node.children.forEach(element => element.traverse(element));
+            node.children.forEach(element => element.traverse(element, result));
         }
 
         return result;
+        
     }
 
     insert(new_class_possibilities)
@@ -64,7 +66,12 @@ class Node {
                 element.insert(new_class_possibilities));
         }
     }
+
+    delete(node){
+        console.log("Deleting in progress!");
+    }
 }
+
 
 
 
@@ -116,9 +123,10 @@ let layer2 = [];
 layer2.push(node3);
 
 
-let node4 = new Node([0,0,0,1,1,1,0,0], 3, []);
+let node4 = new Node([0,0,1,1,0,0,0,0], 3, []);
+let node5 = new Node([0,1,1,0,0,0,0,0], 3, []);
 let layer3 = [];
-layer3.push(node4);
+layer3.push(node4, node5);
 
 let tree = new Node([0,0,0,0,0,0,0,0], 0, []);
 
@@ -126,7 +134,39 @@ let tree = new Node([0,0,0,0,0,0,0,0], 0, []);
 tree.insert(layer1);
 tree.insert(layer2);
 tree.insert(layer3);
-console.log(tree.traverse(tree));
+tree.delete(node5);
 
-//console.log(tree.children[0].children[0]);
 
+// Generate tree function
+class Tree{
+    
+    constructor([...courses]){
+        this.allCourses = [...courses];
+    }
+
+   
+
+    generateTree([...courses]){
+        for(let course of [...courses]){
+            console.log(course);
+        }
+    }
+
+    deleteCourse(courseName){
+        return this.generateTree(this.allCourses.filter(course => course !== courseName));
+    }
+
+    add(newCourse){
+        return this.generateTree([...this.allCourses, newCourse])
+    }
+    
+    
+}
+
+
+
+
+let x = new Tree(['class1', 'class2','class3','class4']);
+x.generateTree(x.allCourses);
+console.log("---------");
+x.add('class6');
