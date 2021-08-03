@@ -1,0 +1,18 @@
+h1 {
+    text-align: center;
+}
+
+#floatingText, #addClass {
+    color:cornflowerblue;
+    background-color: white;
+    border: 0cm;
+    font-size: 2rem;
+    
+}
+
+#flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+

@@ -6,36 +6,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Testing Site</title>
 
-    <!-- Needed for timetable.js -->
+    <!-- TOAST UI -->
+    <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+    <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+
+    <!-- TOAST UI -->
+
+    <!-- Timetable.js -->
     <link rel="stylesheet" href="./dist/styles/timetablejs.css">
     <script src="./dist/scripts/timetable.js"></script>
-    <!-- Needed for timetable.js -->
+    <!-- Timetable.js -->
+
+    <!-- JQuery -->
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <!-- JQuery -->
 
-    <script type="module" src="data.js"></script>
-    <script type="module" src="algo.js"></script>
-
-
-    <!-- <script  src="script.js"></script>
-    <script  src="Course.js"></script> -->
- 
-
-</head>
-<body>
-    <!-- Placeholder for time table -->
-    <h1>Building Schedule Prototype</h1>
-
-
- <!--drop down menu-->
-<!--refrence: https://getbootstrap.com/docs/4.0/components/dropdowns/-->
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  </head>
-  <body>
-  
+    <!-- Bootstrap -->
+
+    <!-- Style -->
+    <link rel="stylesheet" href="./style.css">
+    <!-- Style -->
+
+    <!-- Scripts  -->
+    <script type="module" src="data.js"></script>
+    <script src="script.js"></script>
+    <script type="module" src="table.js"></script>
+
+    <!-- Scripts  -->
+
+
+</head>
+<body>
+  <!-- Placeholder for TOAST UI Table -->
+
+
+  <!-- Placeholder for timetable -->
+  <h1>Building Schedule Prototype</h1>
+
+  <!--Drop down menu-->
+  <!--refrence: https://getbootstrap.com/docs/4.0/components/dropdowns/-->
   <div class="container">
     <h4>Select Core</h4>
     <div class="dropdown">
@@ -53,22 +66,28 @@
     </div><br>
     <p><strong>Note:</strong> Select core to find classes that meet USFCA core requirements.</p>
   </div>
-  
-  <script>
-  $(document).ready(function(){
-    $(".dropdown-toggle").dropdown();
-  });
-  </script>
-
 
   <!--table and add class button-->
-  
-  </body>
+  <div id="flex">
     <button id="addClass">Add Class</button>
-    <div class="timetable">
-        
-    </div>
-    <script type="module" src="index.js"></script>
+    <button id="floatingText">#CoreA1</button>
+    <button id="floatingText">#CoreA2</button>
+    <button id="floatingText">#CoreB1</button>
+    <button id="floatingText">#CoreB2</button>
+    <button id="floatingText">#CoreC1</button>
+    <button id="floatingText">#CoreC2</button>
+  </div>
+
+  <div id="grid">
+
+  </div>
+
+  <div class="timetable"></div>
+  <!--table and add class button-->
+
+  <!-- Scripts -->
+  <script type="module" src="index.js"></script>
+
 </body>
 
 </html>

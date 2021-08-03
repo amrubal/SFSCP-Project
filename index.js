@@ -1,6 +1,7 @@
 import Course from './Course.js';
 import courseArray from './data.js'
 
+console.log(courseArray[50]);
 // Counter to get course from arr
 let list = generateList();
 let counter = 0;
