@@ -1,12 +1,30 @@
 import courseArray from './data.js'
+import {newCourse} from './data.js'
 
+// Render table
+let timetable = new Timetable();
+
+
+// Set the time from 6AM to 9PM
+const finalStartTime = 6;
+const finalEndTime = 21;
+const interval = 2; //  1 hour / 30 minutes = 2 x 30mins interval each hour
+
+timetable.setScope(finalStartTime, finalEndTime)
+
+//  Set the rows headers
+timetable.addLocations(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
+
+
+
+let renderer = new Timetable.Renderer(timetable);
+renderer.draw('.timetable');
+
+// Declare placeholder for current courses
+let currentCourses = [];
 const Grid = tui.Grid;
-
-const instance = new Grid({
+export const instance = new Grid({
     el: document.getElementById('grid'),
-    pageOptions: {
-        perPage: 10
-      },
      // Container element
     columns: [
         {
@@ -34,6 +52,10 @@ const instance = new Grid({
           {
             header: 'Attribute',
             name: 'attribute'
+          },
+          {
+            header: 'Days',
+            name: 'days'
           },
     ],
     data: [
@@ -2644,6 +2666,64 @@ const instance = new Grid({
     bodyHeight: 300,
 });
 
-  console.log()
+instance.on('check', (e) => {
+    let course1 = newCourse(instance.getRow(e.rowKey));
+    currentCourses.push(course1);
+    for(let course of currentCourses){
+        let x = course.days;
+        let courseDays = course.days.split(' ');
+        for(let day of courseDays){
+            course.setDay(day);
+            addClass(course);
+            renderer.draw('.timetable');
+        }
+    }
 
-  Grid.applyTheme('striped'); // Call API of static method
+    console.log(currentCourses);
+    
+})
+
+instance.on('uncheck', (e) => {
+    let courseRemove = newCourse(instance.getRow(e.rowKey));
+    // Should filter based on CRN because those are unique
+    currentCourses = currentCourses.filter(course => course.crn != courseRemove.crn);
+    if (currentCourses.length === 0) {
+        // Essentially erase the table and render it again.
+        timetable = new Timetable();
+        renderer = new Timetable.Renderer(timetable);
+        timetable.setScope(finalStartTime, finalEndTime)
+        timetable.addLocations(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
+        renderer.draw('.timetable');
+    } else {
+        // erase the table and add the class again (with the unchecked class removed)
+        timetable = new Timetable();
+        renderer = new Timetable.Renderer(timetable);
+        timetable.setScope(finalStartTime, finalEndTime)
+        timetable.addLocations(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
+        let daysArray = [];
+        for(let course of currentCourses){
+            daysArray.push(course.days);
+            let courseDays = course.days.split(' ');
+            for(let day of courseDays){
+                course.setDay(day);
+                addClass(course);
+                renderer.draw('.timetable');
+            }
+        }
+        console.log(daysArray);
+
+        renderer.draw('.timetable');
+        
+
+        
+        
+
+    }
+})
+
+Grid.applyTheme('striped'); // Call API of static method
+
+function addClass(course){
+    timetable.addEvent(course.name,course.days,course.dateStart,course.dateEnd);
+}
+

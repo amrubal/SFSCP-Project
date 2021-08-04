@@ -3249,6 +3249,9 @@ function newCourseArray(objectArray){
   }
   return arr;
 }
+export function newCourse(object){
+    return new Course(object.crn, object.title, extractDaysOfWeek(object),createNewDate('start', object),createNewDate('end',object));
+}
 
 
 let courseArray = newCourseArray(result);

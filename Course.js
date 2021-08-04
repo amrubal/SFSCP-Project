@@ -1,5 +1,6 @@
 class Course{
-    constructor(name, days, dateStart, dateEnd){
+    constructor(crn, name, days, dateStart, dateEnd){
+        this.crn = crn;
         this.name = name;
         this.days = days;
         this.dateStart = dateStart;
