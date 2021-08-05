@@ -1,6 +1,8 @@
 class Node {
-    constructor(value, layer, children)
+    constructor(name, crn, value, layer, children)
     {
+        this.name = name;
+        this.crn = crn;
         this.value = value;
         this.layer = layer;
         this.children = children;
@@ -28,7 +30,7 @@ class Node {
             for (let i = 0; i < new_class_possibilities.length; i++)
             {
                 //clone node in class list of times
-                let temp = new Node(new_class_possibilities[i].value, new_class_possibilities[i].layer, []);
+                let temp = new Node(new_class_possibilities[i].name, new_class_possibilities[i].crn, new_class_possibilities[i].value, new_class_possibilities[i].layer, []);
                 //console.log(temp);
 
                 // Root is not combined with first layer
@@ -41,6 +43,7 @@ class Node {
                     else{
                         //console.log("there's no conflict");
                         temp.value = addArray(temp.value, this.value);
+                        temp.crn = this.crn + " " + temp.crn;
                         this.children.push(temp);
                     }
                 
@@ -68,7 +71,7 @@ class Tree{
     }
 
     generateTree([...courses]){
-        let tree = new Node([0,0,0,0,0,0,0,0], 0, []);
+        let tree = new Node("Root", "", [0,0,0,0,0,0,0,0], 0, []);
         let result = [];
         
         for(let course of [...courses]){
@@ -181,26 +184,22 @@ function addEventToArray(startDate, endDate, day){
 // 5. Delete / Add more classes based on the tree object. 
 
 // Create all the nodes
-let node1 = new Node([0,0,1,1,0,0,0,0], 1, []);
-let node2 = new Node([1,1,0,0,0,0,0,0], 1, []);
-let node3 = new Node([0,0,0,0,1,1,0,0], 2, []);
-let node4 = new Node([0,0,1,1,0,0,0,0], 3, []);
-let node5 = new Node([0,1,1,0,0,0,0,0], 3, []);
-let node6 = new Node([0,0,0,0,0,0,0,0], 4, []);
+let node1 = new Node("a", "100", [0,0,1,1,0,0,0,0], 1, []);
+let node2 = new Node("b", "101", [1,1,0,0,0,0,0,0], 1, []);
+let node3 = new Node("c", "102", [0,0,0,0,1,1,0,0], 2, []);
+let node4 = new Node("d", "103", [0,0,1,1,0,0,0,0], 3, []);
+let node5 = new Node("e", "104", [0,1,1,0,0,0,0,0], 3, []);
 
 // Assign nodes into classes
 let class1 = [node1, node2];
 let class2 = [node3];
 let class3 = [node4, node5];
-let class4 = [node6];
 
 // Create new tree and perform add/deletion on them.
 let tree = new Tree([class1, class2, class3]);
 let before = tree.generateTree(tree.allCourses);
 console.log(before.traverse(before, result=[]));
 console.log("---------");
-let after = tree.addCourse(class4);
-console.log(after.traverse(after, result=[]));
 
 // Each class will be an array of different nodes
 // each node represent a different section.

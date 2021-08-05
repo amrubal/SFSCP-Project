@@ -9,7 +9,7 @@ let timetable = new Timetable();
 // Set the time from 6AM to 9PM
 const finalStartTime = 6;
 const finalEndTime = 21;
-const interval = 2; //  1 hour / 30 minutes = 2 x 30mins interval each hour
+const interval = 12; //  1 hour / 5 minutes = 12 x 5mins interval each hour
 
 timetable.setScope(finalStartTime, finalEndTime)
 
