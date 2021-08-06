@@ -131,7 +131,16 @@ instance.on('uncheck', (e) => {
     }
 })
 
-Grid.applyTheme('striped'); // Call API of static method
+Grid.applyTheme('striped', { // Call API of static method
+  cell: {
+    header: {
+      background: '#FFE09C'
+    },
+    evenRow: {
+      background: '#9CBBFF'
+    }
+  }
+}); 
 
 function addClass(course){
     timetable.addEvent(course.name,course.days,course.dateStart,course.dateEnd);
