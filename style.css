@@ -11,7 +11,11 @@ body{
     background: #ACC3A6;  /* fallback for old browsers */
 }
 
-
+#buttonNextContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
 #usfLink{
     font-family: Verdana, sans-serif;
     font-weight: bolder;
@@ -37,7 +41,7 @@ h2 {
 }
 
 
-#floatingText{
+.floatingText{
     font-family: Verdana, sans-serif;
     color:#191102;
      background-color: #ACC3A6;

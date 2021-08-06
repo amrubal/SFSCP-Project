@@ -62,7 +62,8 @@ const instance = new Grid({
           },
           {
             header: 'Attribute',
-            name: 'attribute'
+            name: 'attribute',
+            filter: 'select',
           },
           {
             header: 'Days',
@@ -137,6 +138,18 @@ instance.on('uncheck', (e) => {
     }
 })
 
+
+const coreButtons = document.getElementsByClassName('floatingText');
+for(let button of coreButtons){
+  button.addEventListener('click', () => {
+    instance.resetData(data.filter(course => course.attribute.includes(button.innerHTML)))
+  })
+}
+
+
+instance.resetData(data.filter(course => course.attribute === "Core A1 Public Speaking"));
+
+
 Grid.applyTheme('striped', { // Call API of static method
   cell: {
     header: {
@@ -147,6 +160,8 @@ Grid.applyTheme('striped', { // Call API of static method
     }
   }
 }); 
+
+
 
 function addClass(course){
     timetable.addEvent(course.name,course.days,course.dateStart,course.dateEnd);

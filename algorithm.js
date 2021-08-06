@@ -1,4 +1,6 @@
+import Course from "./Course.js";
 import courseArray from "./data.js";
+import {newCourse} from './data.js'
 export class Node {
     constructor(name, crn, value, layer, children)
     {
@@ -132,6 +134,10 @@ function addArray(arr1, arr2) {
            ? arr1.map((number, id) => number + arr2[id])
            : addArrDiffLen(arr1, arr2); 
 }
+
+function addClass(course){
+    timetable.addEvent(course.name,course.days,course.dateStart,course.dateEnd);
+}
 const finalStartTime = 6;
 const finalEndTime = 21;
 const interval = 12; //  1 hour / 5 minutes = 12 x 5mins interval each hour
@@ -168,9 +174,19 @@ let x = before.traverse(before, result);
 
 let generate = document.getElementById('generate');
 
+
+let timetable = new Timetable();
+let renderer = new Timetable.Renderer(timetable);
+timetable.setScope(finalStartTime, finalEndTime);
+timetable.addLocations(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
+
+let counter = 0;
 generate.addEventListener('click', () => {
   let selectedClasses = $('#classes :selected');
-  console.log(selectedClasses.length);
+  if(selectedClasses.length === 0){
+      alert('No classes are selected');
+      return;
+  }
   let arr = [];
   let layerNumber = 1;
   for(let i = 0; i < selectedClasses.length; i++){
@@ -189,22 +205,43 @@ generate.addEventListener('click', () => {
   // now we need to transform a from course to node.
 
   let tree = new Tree(arr);
-  console.log("This tree");
   let before = tree.generateTree(tree.allCourses);
-  console.log(before);
   let traverseResult = before.traverse(before, result = []);
-  console.log(traverseResult);
   let useful = tree.extractUsefulNodes(traverseResult,selectedClasses.length);
-
-  for(let node of useful){
-      let y = node.crn.split(' ').filter(x => x !== "");
-      console.log("POSSIBLE SCHEDULE");
-      for (let crnNum of y){
-          console.log(findCourse(crnNum, courseArray));
-      }
-      console.log("----------------");
+  let node;
+  if (counter < useful.length){
+      node = useful[counter];
+  } else {
+      alert("No More Possible Schedule")
+      counter = 0;
+      return;
   }
+
+  outputOneSchedule(node);
+  counter++;
+
 })
+
+
+
+function outputOneSchedule(usefulNode){
+    timetable = new Timetable();
+    renderer = new Timetable.Renderer(timetable);
+    timetable.setScope(finalStartTime, finalEndTime)
+    timetable.addLocations(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
+    renderer.draw('.timetable');
+    let y = usefulNode.crn.split(' ').filter(x => x !== "");
+      for (let crnNum of y){    
+        let course1 = findCourse(crnNum,courseArray)
+        let courseClone = new Course(course1.crn, course1.name, course1.days, course1.dateStart, course1.dateEnd);
+        let courseDays = courseClone.days.split(' ');
+        for(let day of courseDays){
+            courseClone.setDay(day);
+            addClass(courseClone);
+            renderer.draw('.timetable');
+        }
+      }
+}
 
 // Each class will be an array of different nodes
 // each node represent a different section.
