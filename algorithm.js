@@ -91,7 +91,6 @@ export default class Tree{
     }
 
     extractUsefulNodes(traverseResult, numOfClasses){
-        console.log(traverseResult[135].crn.split(' ').length);
         return traverseResult.filter(result => result.crn.split(' ').length === (numOfClasses+1));
     }
     
@@ -162,17 +161,16 @@ sample.push(class1, class2, class3);
 
 // Create new tree and perform add/deletion on them.
 let tree = new Tree(sample);
-console.log(tree.allCourses[0]);
 let before = tree.generateTree(tree.allCourses);
 let result = [];
 let x = before.traverse(before, result);
-console.log(x);
 
 
 let generate = document.getElementById('generate');
 
 generate.addEventListener('click', () => {
-  var selectedClasses = $('#classes :selected');
+  let selectedClasses = $('#classes :selected');
+  console.log(selectedClasses.length);
   let arr = [];
   let layerNumber = 1;
   for(let i = 0; i < selectedClasses.length; i++){
@@ -192,14 +190,20 @@ generate.addEventListener('click', () => {
 
   let tree = new Tree(arr);
   console.log("This tree");
-  console.log(tree.allCourses);
   let before = tree.generateTree(tree.allCourses);
+  console.log(before);
   let traverseResult = before.traverse(before, result = []);
-  let useful = tree.extractUsefulNodes(traverseResult,4);
-  console.log(useful);
-    for(let i = 0; i < useful.length; i++){
-        console.log(`${i}` + useful[i].crn);
-    }
+  console.log(traverseResult);
+  let useful = tree.extractUsefulNodes(traverseResult,selectedClasses.length);
+
+  for(let node of useful){
+      let y = node.crn.split(' ').filter(x => x !== "");
+      console.log("POSSIBLE SCHEDULE");
+      for (let crnNum of y){
+          console.log(findCourse(crnNum, courseArray));
+      }
+      console.log("----------------");
+  }
 })
 
 // Each class will be an array of different nodes

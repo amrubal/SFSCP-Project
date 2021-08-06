@@ -35,7 +35,8 @@ const instance = new Grid({
      // Container element
     data: data,
     rowHeaders: ['checkbox'],
-    bodyHeight: 200,
+    bodyHeight: 260,
+    scrollX: false,
     columns: [
         {
             header: 'CRN',
@@ -142,7 +143,7 @@ Grid.applyTheme('striped', { // Call API of static method
       background: '#FFE09C'
     },
     evenRow: {
-      background: '#9CBBFF'
+      background: '#FFE09C'
     }
   }
 }); 

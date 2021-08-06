@@ -174,8 +174,10 @@
 }
 
 .timetable .time-entry {
-	background-color: #ec6a5e;
-	transition: background-color .2s;
+	background: #76b852;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #8DC26F, #76b852);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #8DC26F, #76b852); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	transition: background-color 0.1s;
 	height: 45px;
 	display: block;
 	position: absolute;
@@ -184,7 +186,7 @@
 	white-space: normal;
 	overflow: hidden;
 	color: #fff;
-	border: 1px solid #e32c1b;
+	border: 1px solid #76b852;
 	transform-style: preserve-3d
 }
 
@@ -196,5 +198,5 @@
 }
 
 .timetable .time-entry:hover {
-	background-color: #e74030
+	background-color: #76b852
 }
