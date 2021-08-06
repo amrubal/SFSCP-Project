@@ -17,6 +17,7 @@ timetable.setScope(finalStartTime, finalEndTime)
 //  Set the rows headers
 timetable.addLocations(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
 
+
 //To test adding multiple days to addEventToArray
 //let y = new Course("134", "name", 'Monday Wednesday Friday', new Date(2015,7,17,6,0), new Date(2015,7,17,7,0));
 //console.log(addEventToArray(y.dateStart, y.dateEnd, y.days));
