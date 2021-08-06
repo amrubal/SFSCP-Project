@@ -3245,17 +3245,17 @@ function extractDaysOfWeek(object){
 function newCourseArray(objectArray){
   let arr = [];
   for(let i = 0; i< objectArray.length; i++){
-    arr.push(new Course(objectArray[i].title, extractDaysOfWeek(objectArray[i]), createNewDate('start', objectArray[i]), createNewDate('end', objectArray[i])));
+    arr.push(new Course(objectArray[i].crn, objectArray[i].title, extractDaysOfWeek(objectArray[i]), createNewDate('start', objectArray[i]), createNewDate('end', objectArray[i])));
   }
   return arr;
 }
 export function newCourse(object){
-    return new Course(object.crn, object.title, extractDaysOfWeek(object),createNewDate('start', object),createNewDate('end',object));
+  console.log(object.crn);
+    return new Course(object.crn, object.title, extractDaysOfWeek(object), createNewDate('start', object), createNewDate('end',object));
 }
 
 
 let courseArray = newCourseArray(result);
-
 // export courseArray to other files
 export default courseArray;
 

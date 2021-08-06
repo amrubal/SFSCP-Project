@@ -165,6 +165,28 @@ function initializeTimeArray(){
 }
 
 function addEventToArray(startDate, endDate, days){
+  function findDayInterval(day)
+{
+  //determine where all the days are at in the event array
+  let x = 0;
+  switch(day) {
+      case 'Monday':
+          break;
+      case 'Tuesday':
+          x += 15 * interval;
+          break;
+      case 'Wednesday':
+          x += 15 * (interval * 2);
+          break;
+      case 'Thursday':
+          x += 15 * (interval * 3);
+          break;
+      case 'Friday':
+          x+= 15 * (interval * 4);
+          break;
+  }
+  return x;
+}
     let timearray = initializeTimeArray();
     //hours of event time substracted by start time multiplied by intervals between every hour
     let startTime = (startDate.getHours()-finalStartTime)*interval
@@ -258,29 +280,5 @@ function addEventToArray(startDate, endDate, days){
     }
     return timearray;
 }
-
-function findDayInterval(day)
-{
-  //determine where all the days are at in the event array
-  let x = 0;
-  switch(day) {
-      case 'Monday':
-          break;
-      case 'Tuesday':
-          x += 15 * interval;
-          break;
-      case 'Wednesday':
-          x += 15 * (interval * 2);
-          break;
-      case 'Thursday':
-          x += 15 * (interval * 3);
-          break;
-      case 'Friday':
-          x+= 15 * (interval * 4);
-          break;
-  }
-  return x;
-}
-
 
 

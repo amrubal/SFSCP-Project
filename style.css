@@ -31,6 +31,12 @@ body{
     
 }
 
+h2 {
+    color: #ffb81c;
+    text-align: center;
+    font-style: Verdana, sans-serif;
+}
+
 
 #floatingText{
     font-family: Verdana, sans-serif;

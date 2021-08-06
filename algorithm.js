@@ -1,4 +1,5 @@
-class Node {
+import courseArray from "./data.js";
+export class Node {
     constructor(name, crn, value, layer, children)
     {
         this.name = name;
@@ -64,16 +65,15 @@ class Node {
     }  
 }
 
-class Tree{
+export default class Tree{
     
     constructor([...courses]){
         this.allCourses = [...courses];
     }
 
     generateTree([...courses]){
-        let tree = new Node("Root", "", [0,0,0,0,0,0,0,0], 0, []);
+        let tree = new Node("Root", "", initializeTimeArray(), 0, []);
         let result = [];
-        
         for(let course of [...courses]){
             tree.insert(course);
         }
@@ -89,9 +89,16 @@ class Tree{
     addCourse(newCourse){
         return this.generateTree([...this.allCourses, newCourse])
     }
+
+    extractUsefulNodes(traverseResult, numOfClasses){
+        console.log(traverseResult[135].crn.split(' ').length);
+        return traverseResult.filter(result => result.crn.split(' ').length === (numOfClasses+1));
+    }
     
     
 }
+
+
 
 /* ------------------------------ Functions for Node ------------------------------ */
 function detectConflict(class1, class2){
@@ -126,53 +133,9 @@ function addArray(arr1, arr2) {
            ? arr1.map((number, id) => number + arr2[id])
            : addArrDiffLen(arr1, arr2); 
 }
-function addEventToArray(startDate, endDate, day){
-    let timearray = initializeTimeArray();
-    //hours of event time substracted by start time multiplied by intervals between every hour
-    let startTime = (startDate.getHours()-finalStartTime)*interval
-    switch(startDate.getMinutes()) {
-        case 0:
-            break;
-        case 30:
-            startTime += 1;
-            break;
-    }
-
-    let endTime = (endDate.getHours()-finalStartTime)*interval
-    switch(endDate.getMinutes()) {
-        case 0:
-            break;
-        case 30:
-            endTime += 1;
-            break;
-    }
-
-    //determine where all the days are at in the event array
-    let x = 0;
-    switch(day) {
-        case 'Monday':
-            break;
-        case 'Tuesday':
-            x += 12 * interval;
-            break;
-        case 'Wednesday':
-            x += 12 * (interval + 2);
-            break;
-        case 'Thursday':
-            x += 12 * (interval + 4);
-            break;
-        case 'Friday':
-            x+= 12 * (interval + 6);
-            break;
-    }
-    //document.write(x);
-
-    for (let i = startTime + x; i < endTime + x; i++)
-    {
-        timearray[i] += 1;
-    }
-    return timearray;
-}
+const finalStartTime = 6;
+const finalEndTime = 21;
+const interval = 12; //  1 hour / 5 minutes = 12 x 5mins interval each hour
 /* ------------------------------ Functions for Node ------------------------------ */
 
 
@@ -194,13 +157,186 @@ let node5 = new Node("e", "104", [0,1,1,0,0,0,0,0], 3, []);
 let class1 = [node1, node2];
 let class2 = [node3];
 let class3 = [node4, node5];
+let sample = [];
+sample.push(class1, class2, class3);
 
 // Create new tree and perform add/deletion on them.
-let tree = new Tree([class1, class2, class3]);
+let tree = new Tree(sample);
+console.log(tree.allCourses[0]);
 let before = tree.generateTree(tree.allCourses);
-console.log(before.traverse(before, result=[]));
-console.log("---------");
+let result = [];
+let x = before.traverse(before, result);
+console.log(x);
+
+
+let generate = document.getElementById('generate');
+
+generate.addEventListener('click', () => {
+  var selectedClasses = $('#classes :selected');
+  let arr = [];
+  let layerNumber = 1;
+  for(let i = 0; i < selectedClasses.length; i++){
+    let layer = [];
+    let className = selectedClasses[i].innerText;
+    for(let course of courseArray){
+      if(course.name === className){
+        let x = new Node(course.name, course.crn, addEventToArray(course.dateStart,course.dateEnd,course.days),layerNumber,[]);
+        layer.push(x);
+      }
+    }
+    arr.push(layer);
+    layerNumber++;
+  }
+  // Arr is an array of all courses that match 
+  // now we need to transform a from course to node.
+
+  let tree = new Tree(arr);
+  console.log("This tree");
+  console.log(tree.allCourses);
+  let before = tree.generateTree(tree.allCourses);
+  let traverseResult = before.traverse(before, result = []);
+  let useful = tree.extractUsefulNodes(traverseResult,4);
+  console.log(useful);
+    for(let i = 0; i < useful.length; i++){
+        console.log(`${i}` + useful[i].crn);
+    }
+})
 
 // Each class will be an array of different nodes
 // each node represent a different section.
 //TODO: Find classes that have the same 
+function findCourse(crn, allCourses){
+    for (let course of allCourses){
+      if (course.crn === crn){
+        return course;
+      }
+    }
+    }
+
+function addEventToArray(startDate, endDate, days){
+function findDayInterval(day)
+{
+//determine where all the days are at in the event array
+let x = 0;
+switch(day) {
+    case 'Monday':
+        break;
+    case 'Tuesday':
+        x += 15 * interval;
+        break;
+    case 'Wednesday':
+        x += 15 * (interval * 2);
+        break;
+    case 'Thursday':
+        x += 15 * (interval * 3);
+        break;
+    case 'Friday':
+        x+= 15 * (interval * 4);
+        break;
+}
+return x;
+}
+    let timearray = initializeTimeArray();
+    //hours of event time substracted by start time multiplied by intervals between every hour
+    let startTime = (startDate.getHours()-finalStartTime)*interval
+    switch(startDate.getMinutes()) {
+    case 0:
+        break;
+    case 5:
+        startTime += 1;
+        break;
+    case 10:
+        startTime += 2;
+        break;
+    case 15:
+        startTime += 3;
+        break;
+    case 20:
+        startTime += 4;
+        break;
+    case 25:
+        startTime += 5;
+        break;
+    case 30:
+        startTime += 6;
+        break;
+    case 35:
+        startTime += 7;
+        break;
+    case 40:
+        startTime += 8;
+        break;
+    case 45:
+        startTime += 9;
+        break;
+    case 50:
+        startTime += 10;
+        break;
+    case 55:
+        startTime += 11;
+        break;
+    }
+
+    let endTime = (endDate.getHours()-finalStartTime)*interval
+    switch(endDate.getMinutes()) {
+    case 0:
+    break;
+    case 5:
+    endTime += 1;
+    break;
+    case 10:
+    endTime += 2;
+    break;
+    case 15:
+    endTime += 3;
+    break;
+    case 20:
+    endTime += 4;
+    break;
+    case 25:
+    endTime += 5;
+    break;
+    case 30:
+    endTime += 6;
+    break;
+    case 35:
+    endTime += 7;
+    break;
+    case 40:
+    endTime += 8;
+    break;
+    case 45:
+    endTime += 9;
+    break;
+    case 50:
+    endTime += 10;
+    break;
+    case 55:
+    endTime += 11;
+    break;
+    }
+
+    let courseDays = days.split(' ');
+    
+    for(let day of courseDays)
+    {
+    let addInterval = findDayInterval(day);
+    for (let i = startTime + addInterval; i < endTime + addInterval; i++)
+    {
+        timearray[i] += 1;
+    }
+    }
+    return timearray;
+    }
+
+function initializeTimeArray(){
+    // Initialize timearray to empty array
+    let timearray = [];
+
+    // Loop and add zero into each interval
+    for (let i = 0; i < (finalEndTime-finalStartTime)*interval*5; i++)
+    {
+        timearray.push(0);
+    }
+    return timearray;
+}
