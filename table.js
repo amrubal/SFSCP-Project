@@ -1,6 +1,7 @@
 import Course from './Course.js';
 import {newCourse} from './data.js'
 import {data} from './class_info.js'
+import courseArray from './data.js'
 
 
 // Render table
@@ -16,6 +17,9 @@ timetable.setScope(finalStartTime, finalEndTime)
 //  Set the rows headers
 timetable.addLocations(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
 
+//To test adding multiple days to addEventToArray
+//let y = new Course("134", "name", 'Monday Wednesday Friday', new Date(2015,7,17,6,0), new Date(2015,7,17,7,0));
+//console.log(addEventToArray(y.dateStart, y.dateEnd, y.days));
 
 
 let renderer = new Timetable.Renderer(timetable);
@@ -86,7 +90,7 @@ instance.on('check', (e) => {
             renderer.draw('.timetable');
         }
     }
-
+    console.log(temp);
     currentCourses = temp;
 })
 
@@ -136,4 +140,137 @@ Grid.applyTheme('striped'); // Call API of static method
 function addClass(course){
     timetable.addEvent(course.name,course.days,course.dateStart,course.dateEnd);
 }
+
+// Intialize time array with 0s.
+function initializeTimeArray(){
+    // Initialize timearray to empty array
+    let timearray = [];
+
+    // Loop and add zero into each interval
+    for (let i = 0; i < (finalEndTime-finalStartTime)*interval*5; i++)
+    {
+        timearray.push(0);
+    }
+    return timearray;
+}
+
+function addEventToArray(startDate, endDate, days){
+    let timearray = initializeTimeArray();
+    //hours of event time substracted by start time multiplied by intervals between every hour
+    let startTime = (startDate.getHours()-finalStartTime)*interval
+    switch(startDate.getMinutes()) {
+      case 0:
+        break;
+      case 5:
+        startTime += 1;
+        break;
+      case 10:
+        startTime += 2;
+        break;
+      case 15:
+        startTime += 3;
+        break;
+      case 20:
+        startTime += 4;
+        break;
+      case 25:
+        startTime += 5;
+        break;
+      case 30:
+        startTime += 6;
+        break;
+      case 35:
+        startTime += 7;
+        break;
+      case 40:
+        startTime += 8;
+        break;
+      case 45:
+        startTime += 9;
+        break;
+      case 50:
+        startTime += 10;
+        break;
+      case 55:
+        startTime += 11;
+        break;
+    }
+
+    let endTime = (endDate.getHours()-finalStartTime)*interval
+    switch(endDate.getMinutes()) {
+    case 0:
+      break;
+    case 5:
+      endTime += 1;
+      break;
+    case 10:
+      endTime += 2;
+      break;
+    case 15:
+      endTime += 3;
+      break;
+    case 20:
+      endTime += 4;
+      break;
+    case 25:
+      endTime += 5;
+      break;
+    case 30:
+      endTime += 6;
+      break;
+    case 35:
+      endTime += 7;
+      break;
+    case 40:
+      endTime += 8;
+      break;
+    case 45:
+      endTime += 9;
+      break;
+    case 50:
+      endTime += 10;
+      break;
+    case 55:
+      endTime += 11;
+      break;
+    }
+
+    let courseDays = days.split(' ');
+    
+    for(let day of courseDays)
+    {
+      console.log(day);
+      let addInterval = findDayInterval(day);
+      for (let i = startTime + addInterval; i < endTime + addInterval; i++)
+      {
+        timearray[i] += 1;
+      }
+    }
+    return timearray;
+}
+
+function findDayInterval(day)
+{
+  //determine where all the days are at in the event array
+  let x = 0;
+  switch(day) {
+      case 'Monday':
+          break;
+      case 'Tuesday':
+          x += 15 * interval;
+          break;
+      case 'Wednesday':
+          x += 15 * (interval * 2);
+          break;
+      case 'Thursday':
+          x += 15 * (interval * 3);
+          break;
+      case 'Friday':
+          x+= 15 * (interval * 4);
+          break;
+  }
+  return x;
+}
+
+
 
