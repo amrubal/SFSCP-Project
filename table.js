@@ -49,12 +49,14 @@ const instance = new Grid({
           },
           {
             header: 'Title',
-            name: 'title'
+            name: 'title',
+            filter: 'select',
           },
           {
             header: 'Time',
             name: 'time',
-            className: 'hello'
+            className: 'hello',
+            filter: 'select',
           },
           {
             header: 'Instructor',
@@ -67,7 +69,8 @@ const instance = new Grid({
           },
           {
             header: 'Days',
-            name: 'days'
+            name: 'days',
+            filter: 'select',
           },
     ],
    
