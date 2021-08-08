@@ -425,5 +425,21 @@ prevButton.addEventListener('click', () => {
     counter--;
     node = useful[counter];
     outputOneSchedule(node);
-
 })
+
+let getCRN = document.getElementById('getCRN');
+// Copy CRN number to clipboard -> 
+// IMPORTANT: Only work on Chrome
+getCRN.addEventListener('click', () => {
+    navigator.permissions.query({name: "clipboard-write"}).then(result => {
+        if (result.state == "granted" || result.state == "prompt") {
+            navigator.clipboard.writeText(useful[counter].crn).then(function() {
+                alert("Successfully copied");
+              }, function() {
+                alert("Failed to copy to clipboard")
+              });
+        }
+      });
+})
+
+
