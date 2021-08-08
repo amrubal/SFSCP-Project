@@ -1,6 +1,8 @@
 import Course from "./Course.js";
 import courseArray from "./data.js";
 import {newCourse} from './data.js'
+import {instance} from './table.js'
+
 
 // Setting for timetable
 const finalStartTime = 6;
@@ -331,6 +333,9 @@ let useful;
 generate.addEventListener('click', () => {
     // Find all selected classes
     let selectedClasses = $('#classes :selected');
+    
+    // Extract the stuff in checked rows.
+    
     if(selectedClasses.length === 0){
         alert('No classes are selected');
         return;
@@ -361,8 +366,24 @@ generate.addEventListener('click', () => {
             allSections.push(layer);
             layerNumber++;
         }
+        
+        // Get checked course and add them in in another layer
+        let checkedRows = instance.getCheckedRows();
+        if (checkedRows.length !== 0){
+            let checkedClassesLayer = [];
+            for (let row of checkedRows) {
+                let y = newCourse(row);
+                let x = new Node(y.name, y.crn, addEventToArray(y.dateStart, y.dateEnd, y.days),layerNumber,[]);
+                checkedClassesLayer.push(x);
+            }
+            selectedClasses.push(checkedClassesLayer);
+            allSections.push(checkedClassesLayer);
+            currentCourses = selectedClasses;
 
-        currentCourses = selectedClasses;
+            // Error with the connection.
+        }
+        
+
         // Create new tree
         let tree = new Tree(allSections);
         let generatedTree = tree.generateTree(tree.allCourses);
@@ -375,7 +396,8 @@ generate.addEventListener('click', () => {
             node = useful[counter];
             outputOneSchedule(node);
         } else {
-            alert("No More Possible Schedule")
+            alert("No More Possible Schedule 1")
+            counter = -1;
             return;
         }
         
@@ -386,6 +408,7 @@ generate.addEventListener('click', () => {
             node = useful[counter];
         } else {
             alert("No More Possible Schedule")
+            counter = -1;
             return;
         }
         outputOneSchedule(node);
@@ -441,5 +464,6 @@ getCRN.addEventListener('click', () => {
         }
       });
 })
+
 
 

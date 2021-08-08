@@ -30,7 +30,7 @@ renderer.draw('.timetable');
 let currentCourses = [];
 const Grid = tui.Grid;
 
-const instance = new Grid({
+export const instance = new Grid({
     el: document.getElementById('grid'),
      // Container element
     data: data,
